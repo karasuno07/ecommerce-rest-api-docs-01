@@ -1,0 +1,290 @@
+<!-- Product Manage -->
+<div class="content-wrapper" th:fragment="manage-product">
+    <!-- Local Resources -->
+    <link rel="stylesheet" type="text/css" th:href="@{admin/css/layout/manage/product.css}">
+    <script type="text/javascript" th:src="@{admin/js/layout/manage/product.js}"></script>
+    <script type="text/javascript" th:src="@{admin/js/layout/manage/image-file-chooser.js}"></script>
+    <!-- JQuery Validate plugin -->
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <!-- DataTable plugin -->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/cr-1.5.4/date-1.1.0/fc-3.3.3/fh-3.1.9/kt-2.6.2/r-2.2.9/rg-1.1.3/rr-1.2.8/sc-2.0.4/sb-1.1.0/sp-1.3.0/sl-1.3.3/datatables.min.css"/>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/cr-1.5.4/date-1.1.0/fc-3.3.3/fh-3.1.9/kt-2.6.2/r-2.2.9/rg-1.1.3/rr-1.2.8/sc-2.0.4/sb-1.1.0/sp-1.3.0/sl-1.3.3/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.25/api/row().show().js"></script>
+    <!-- Page Title Header Starts-->
+    <div class="row page-title-header">
+        <div class="col-12">
+            <div class="page-header">
+                <div class="page-title"><span>Manage Product</span></div>
+                <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
+                    <ul class="quick-links">
+                        <li><a href="javasript:void(0);">Manage</a></li>
+                        <li><a href="#">Product</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Title Header Ends-->
+
+    <div id="content-wrapper" class="row">
+        <div class="container-fluid">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-list-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-list" type="button" role="tab" aria-controls="nav-list"
+                            aria-selected="false">
+                        <span>List</span>
+                    </button>
+                    <button class="nav-link" id="nav-update-tab" data-bs-toggle="tab" data-bs-target="#nav-update"
+                            type="button" role="tab" aria-controls="nav-update" aria-selected="true">
+                        <span>Modify</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
+                    <!-- Table -->
+                    <div class="table-wrapper">
+                        <table id="product-list" class="table">
+                            <thead>
+                            <tr>
+                                <th class="hide-column"></th>
+                                <th>Product Name</th>
+                                <th class="hide-column"></th>
+                                <th>Category</th>
+                                <th class="hide-column"></th>
+                                <th>Origin</th>
+                                <th class="hide-column"></th>
+                                <th>Supplier</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Quantity</th>
+                                <th class="hide-column"></th>
+                                <th class="hide-column"></th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-bordered">
+                            <tr th:each="item : ${products}">
+                                <td class="hide-column" th:text="${item.id}"></td>
+                                <td th:text="${item.name}"></td>
+                                <td class="hide-column" th:text="${item.category.id}"></td>
+                                <td th:text="${item.category.name}"></td>
+                                <td class="hide-column" th:text="${item.origin.id}"></td>
+                                <td th:text="${item.origin.name}"></td>
+                                <td class="hide-column" th:text="${item.supplier.id}"></td>
+                                <td th:text="${item.supplier.name}"></td>
+                                <td>
+                                    [[${#numbers.formatDecimal(item.price,3,0)}]]
+                                </td>
+                                <td>
+                                    [[${#numbers.formatDecimal(item.discount,3,0)}]]
+                                </td>
+                                <td th:text="${item.quantity}"></td>
+                                <td class="hide-column" th:text="${item.image}"></td>
+                                <td class="hide-column" th:text="${item.descriptions}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- End Table -->
+                </div>
+
+                <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="nav-update-tab">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="productInfo" method="post" enctype="multipart/form-data" action="#">
+                                <div class="row">
+                                    <!-- File upload -->
+                                    <div class="col-lg-4 col-md-5 col-image">
+                                        <div class="file-upload">
+                                            <div class="image-upload-wrap">
+                                                <input class="file-upload-input" type='file'
+                                                       accept="image/*" name="uploadImage"/>
+                                                <div class="drag-text">
+                                                    <h3>
+                                                        Drag and drop <br> or select <br> to upload File
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="file-upload-content">
+                                                <img id="product-image" class="file-upload-image" src="#"
+                                                     alt="your image"/>
+                                            </div>
+                                            <button class="file-upload-btn" type="button"
+                                                    onclick="$('.file-upload-input').trigger('click')">
+                                                <span class="btn-text">Add Image</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- File upload ends -->
+                                    <div class="col-lg-8 col-md-7 col-input-group">
+                                        <div class="mb-3">
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label>Product Name:</label>
+                                                    <span id="name-error" class="error ms-auto"></span>
+                                                </div>
+                                                <div class="input-group">
+                                                    <input type="hidden" name="productId" class="form-control">
+                                                    <input type="text" name="name" class="form-control"
+                                                           placeholder="Enter product's name" data-error="#name-error">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label>Category:</label>
+                                                    <span id="category-error" class="error ms-auto"></span>
+                                                </div>
+                                                 <div class="input-group">
+                                                    <select name="categoryId" class="form-control required"
+                                                            data-error="#category-error">
+                                                        <option disabled selected value="">
+                                                            Choose category type
+                                                        </option>
+                                                        <th:block th:each="item : ${categories}">
+                                                            <option th:value="${item.id}" th:text="${item.name}">
+                                                            </option>
+                                                        </th:block>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label>Origin:</label>
+                                                    <span id="origin-error" class="error ms-auto"></span>
+                                                </div>
+                                                <div class="input-group">
+                                                    <select name="originId" class="form-control required"
+                                                            data-error="#origin-error">
+                                                        <option disabled selected value="">
+                                                            Choose product's origin
+                                                        </option>
+                                                        <th:block th:each="item : ${origins}">
+                                                            <option th:value="${item.id}" th:text="${item.name}">
+                                                            </option>
+                                                        </th:block>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label>Supplier:</label>
+                                                    <span id="supplier-error" class="error ms-auto"></span>
+                                                </div>
+                                                <div class="input-group">
+                                                    <select name="supplierId" class="form-control required"
+                                                            data-error="#supplier-error">
+                                                        <option disabled selected value="">
+                                                            Choose product's supplier
+                                                        </option>
+                                                        <th:block th:each="item : ${suppliers}">
+                                                            <option th:value="${item.id}" th:text="${item.name}">
+                                                            </option>
+                                                        </th:block>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="form-group">
+                                            <label>Price:</label>
+                                            <div class="input-group">
+                                                <input name="price" type="number" min="0" placeholder="0"
+                                                       class="form-control" data-error="#price-error">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">USD</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span id="price-error" class="error"></span>
+                                    </div>
+                                    <div class="col-sm form-group">
+                                        <label>Discount:</label>
+                                        <div class="input-group">
+                                            <input name="discount" type="number" min="0" placeholder="0"
+                                                   class="form-control">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">USD</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="form-group">
+                                            <label>Quantity:</label>
+                                            <div class="input-group">
+                                                <input name="quantity" type="number" min="0" placeholder="0"
+                                                       class="form-control" data-error="#quantity-error">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">Unit(s)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span id="quantity-error" class="error"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col form-group">
+                                        <label>Descriptions:</label>
+                                        <div class="input-group">
+                                            <textarea class="form-control" id="" cols="30" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md form-group d-flex flex-row">
+                                        <button id="first" type="button"
+                                                class="btn btn-outline-dark btn-sm btn-nav">
+                                            <i class="fas fa-step-backward"></i>
+                                        </button>
+                                        <button id="previous" type="button"
+                                                class="btn btn-outline-dark btn-sm btn-nav">
+                                            <i class="fas fa-backward"></i>
+                                        </button>
+                                        <button id="next" type="button" class="btn btn-outline-dark btn-sm btn-nav">
+                                            <i class="fas fa-forward"></i>
+                                        </button>
+                                        <button id="last" type="button" class="btn btn-outline-dark btn-sm btn-nav">
+                                            <i class="fas fa-step-forward"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md form-group d-flex flex-row-reverse">
+                                        <input id="delete-btn" type="submit" name="action"
+                                               formnovalidate="formnovalidate" class="btn btn-danger btn-sm btn-crud"
+                                               value="Delete">
+                                        <input id="update-btn" type="submit" name="action"
+                                               class="btn btn-warning btn-sm btn-crud" value="Update">
+                                        <input id="add-btn" type="submit" name="action"
+                                               class="btn btn-success btn-sm btn-crud" value="Add" disabled>
+                                        <button id="clearForm" type="button" name="action"
+                                                class="btn btn-primary btn-sm btn-crud">New
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- Product Manage Ends -->

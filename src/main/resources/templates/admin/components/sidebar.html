@@ -1,0 +1,67 @@
+<!-- Side Bar -->
+<nav class="sidebar sidebar-offcanvas" id="sidebar" th:fragment="sidebar">
+    <ul class="nav">
+        <li class="nav-item nav-profile">
+            <div class="nav-link">
+                <div class="profile-image">
+                    <img class="img-xs rounded-circle" src="admin/images/faces/default.jpg" alt="profile image">
+                    <div class="dot-indicator bg-success"></div>
+                </div>
+                <div class="text-wrapper">
+                    <p class="profile-name" th:text="${#strings.toUpperCase(session.user.username)}"></p>
+                    <p class="designation">ROLE: ADMIN</p>
+                </div>
+            </div>
+        </li>
+
+        <li class="nav-item nav-category">Main Menu</li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{system/dashboard}">
+                <i class="menu-icon typcn typcn-document-text"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" role="button" href="#management" aria-expanded="false"
+               aria-controls="management">
+                <i class="menu-icon typcn typcn-coffee"></i>
+                <span class="menu-title">Management</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="management">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{system/manage/account}">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{system/manage/product}">Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{system/manage/warehouse}">Warehouse</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" role="button" href="#statistics" aria-expanded="false"
+               aria-controls="statistics">
+                <i class="menu-icon typcn typcn-document-add"></i>
+                <span class="menu-title">Statistics</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="statistics">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{system/statistic/}">Profits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{system/statistic/}">Product</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</nav>
+<!-- Side Bar Ends -->
